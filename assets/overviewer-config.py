@@ -4,13 +4,13 @@
 # Define the path to your world here. 'My World' in this case will show up as
 # the world name on the map interface. If you change it, be sure to also change
 # the referenced world names in the render definitions below.
-worlds['My World'] = "/app/world"
+worlds['m.fe80.eu'] = "/mnt/worlddata"
 
 # Define where to put the output here.
-outputdir = "/app/render"
+outputdir = "/mnt/mapdata"
 
 # Where to get textures to render from
-texturepath = "/app/textures.zip"
+texturepath = "/usr/share/overviewer/textures.zip"
 
 # This is an item usually specified in a renders dictionary below, but if you
 # set it here like this, it becomes the default for all renders that don't
@@ -18,23 +18,14 @@ texturepath = "/app/textures.zip"
 # Try "smooth_lighting" for even better looking maps!
 rendermode = "smooth_lighting"
 
-renders["render1"] = {
-        'world': 'My World',
+renders["Day"] = {
+        'world': 'm.fe80.eu',
         'title': 'Overworld',
 }
 
-# # This example is the same as above, but rotated
-# renders["render2"] = {
-#         'world': 'My World',
-#         'northdirection': 'upper-right',
-#         'title': 'Upper-right north direction',
-# }
-
-# # Here's how to do a nighttime render. Also try "smooth_night" instead of "night"
-# renders["render3"] = {
-#         'world': 'My World',
-#         'title': 'Nighttime',
-#         # Notice how this overrides the rendermode default specified above
-#         'rendermode': 'night',
-# }
+renders["Night"] = {
+        'world': 'm.fe80.eu',
+        'title': 'Nighttime',
+        'rendermode': 'night',
+}
 

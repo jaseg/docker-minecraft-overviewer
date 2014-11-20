@@ -1,18 +1,15 @@
 FROM debian:7.4
-MAINTAINER sage@sagenite.net
+MAINTAINER github@jaseg.net
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget
-
-ADD assets/setup/sources.list.d/overviewer.list /etc/apt/sources.list.d/overviewer.list
-
-RUN wget -O - http://overviewer.org/debian/overviewer.gpg.asc | DEBIAN_FRONTEND=noninteractive apt-key add -
-
+ADD assets/overviewer.list /etc/apt/sources.list.d/overviewer.list
+ADD assets/overviewer.gpg.asc /tmp/
+RUN cat /tmp/overviewer.gpg.asc | DEBIAN_FRONTEND=noninteractive apt-key add -
+RUN rm /tmp/overviewer.gpg.asc
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y minecraft-overviewer
-
-ADD assets/app /app
-
-CMD ["/usr/bin/nice", "-19", "/usr/bin/overviewer.py", "-c", "/app/config.py"]
+ADD assets/overviewer-config.py /etc/
+RUN mkdir /usr/share/overviewer
+ADD assets/textures.zip /usr/share/overviewer/
+CMD ["/usr/bin/nice", "-19", "/usr/bin/overviewer.py", "-c", "/etc/overviewer-config.py"]
