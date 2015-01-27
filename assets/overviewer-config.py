@@ -18,14 +18,39 @@ texturepath = "/usr/share/overviewer/textures.zip"
 # Try "smooth_lighting" for even better looking maps!
 rendermode = "smooth_lighting"
 
-renders["Day"] = {
-        'world': 'm.fe80.eu',
-        'title': 'Overworld',
+def signFilter(poi):
+	if poi['id'] == 'Sign':
+		text = '\n'.join(poi['Text'+str(i)].strip('"') for i in range(1,5)).strip('\n')
+		if text.startswith('#'):
+			return text
+
+def screenshotFilter(poi):
+	'''This looks for signs that have their first line in the '#img:<id>' format, where <id> is an
+	id from an Imgur.com image.'''
+	if poi['id'] == 'Sign':
+		if poi['Text1'].startswith('#img:'):
+			poi['icon'] = "painting_icon.png"
+			image_html = "<style>.infoWindow img[src='{icon}'] {{display: none}}</style><a href='http://imgur.com/{id}'><img src='http://imgur.com/{id}s.jpg' /></a>".format(icon=poi['icon'], id=poi['Text1'][5:])
+			return '\n'.join([image_html] + [poi[ti].strip('"') for ti in ['Text2', 'Text3', 'Text4']]) 
+
+signs = {'name': 'Signs',
+		 'filterFunction': signFilter
 }
 
-renders["Night"] = {
+screenshots = {'name': 'Screenshots',
+			   'filterFunction': screenshotFilter
+}
+
+renders['Day'] = {
+        'world': 'm.fe80.eu',
+        'title': 'Overworld',
+		'markers': [signs, screenshots]
+}
+
+renders['Night'] = {
         'world': 'm.fe80.eu',
         'title': 'Nighttime',
         'rendermode': 'night',
+		'markers': [signs, screenshots]
 }
 
